@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun PostViewerApp(modifier: Modifier = Modifier) {
-    AppNavigation()
+    AppNavigation(modifier)
 }
 
 @Preview(showBackground = true)

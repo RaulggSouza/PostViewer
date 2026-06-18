@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import br.edu.ifsp.scl.sc3045153.postviewer.ui.screens.postdetail.PostDetailScreen
+import br.edu.ifsp.scl.sc3045153.postviewer.ui.screens.postdetail.PostDetailRoute
 import br.edu.ifsp.scl.sc3045153.postviewer.ui.screens.postlist.PostListRoute
 
 @Composable
@@ -25,7 +25,8 @@ fun AppNavigation(modifier: Modifier = Modifier) {
                     navController.navigate(
                         AppRoutes.postDetailRoute(post.id)
                     )
-                }
+                },
+                modifier = modifier
             )
         }
 
@@ -41,11 +42,12 @@ fun AppNavigation(modifier: Modifier = Modifier) {
                 AppRoutes.POST_ID_ARGUMENT
             ) ?: 0
 
-            PostDetailScreen(
+            PostDetailRoute(
                 postId = postId,
                 onBackClick = {
                     navController.popBackStack()
-                }
+                },
+                modifier = modifier
             )
         }
     }
