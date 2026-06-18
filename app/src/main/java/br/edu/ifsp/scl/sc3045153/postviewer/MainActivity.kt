@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             PostViewerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PostViewerScreen(
+                    PostViewerApp(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -31,14 +31,14 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun PostViewerScreen(modifier: Modifier = Modifier) {
+fun PostViewerApp(modifier: Modifier = Modifier) {
     Text(text = "PostViewer", style = MaterialTheme.typography.headlineMedium)
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun PostViewerScreenPrev() {
+private fun PostViewerAppPrev() {
     PostViewerTheme {
-        PostViewerScreen()
+        PostViewerApp()
     }
 }
