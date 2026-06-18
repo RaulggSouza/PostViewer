@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.edu.ifsp.scl.sc3045153.postviewer.data.model.Post
+import br.edu.ifsp.scl.sc3045153.postviewer.ui.screens.postlist.PostListRoute
 import br.edu.ifsp.scl.sc3045153.postviewer.ui.screens.postlist.PostListScreen
 import br.edu.ifsp.scl.sc3045153.postviewer.ui.theme.PostViewerTheme
 
@@ -34,29 +35,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun PostViewerApp(modifier: Modifier = Modifier) {
-    val fakePosts = listOf(
-        Post(
-            userId = 1,
-            id = 1,
-            title = "Primeiro post",
-            body = "Este é um exemplo de post sendo exibido na tela."
-        ),
-        Post(
-            userId = 1,
-            id = 2,
-            title = "Segundo post",
-            body = "Depois vamos trocar esses dados falsos pelos dados da API."
-        ),
-        Post(
-            userId = 2,
-            id = 3,
-            title = "Terceiro post",
-            body = "Cada item aparece dentro de um Card clicável."
-        )
-    )
-
-    PostListScreen(
-        posts = fakePosts,
+    PostListRoute(
         onPostClick = { post ->
             println("Post clicado: ${post.id}")
         }
