@@ -1,4 +1,4 @@
-package br.edu.ifsp.scl.sc3045153.postviewer.viewmodel
+package br.edu.ifsp.scl.sc3045153.postviewer.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

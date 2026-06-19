@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.edu.ifsp.scl.sc3045153.postviewer.viewmodel.PostDetailViewModel
+import br.edu.ifsp.scl.sc3045153.postviewer.ui.viewmodel.PostDetailViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,7 +29,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.ui.platform.LocalContext
 import br.edu.ifsp.scl.sc3045153.postviewer.data.local.DatabaseProvider
 import br.edu.ifsp.scl.sc3045153.postviewer.data.repository.PostRepository
-import br.edu.ifsp.scl.sc3045153.postviewer.viewmodel.PostDetailViewModelFactory
+import br.edu.ifsp.scl.sc3045153.postviewer.ui.viewmodel.PostDetailViewModelFactory
 
 @Composable
 fun PostDetailRoute(

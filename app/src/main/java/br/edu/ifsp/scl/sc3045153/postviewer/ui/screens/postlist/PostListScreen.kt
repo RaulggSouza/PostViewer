@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.edu.ifsp.scl.sc3045153.postviewer.data.model.Post
-import br.edu.ifsp.scl.sc3045153.postviewer.viewmodel.PostListViewModel
+import br.edu.ifsp.scl.sc3045153.postviewer.ui.viewmodel.PostListViewModel
 
 @Composable
 fun PostListRoute(
