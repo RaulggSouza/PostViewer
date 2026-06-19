@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,13 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.edu.ifsp.scl.sc3045153.postviewer.data.model.Post
+import br.edu.ifsp.scl.sc3045153.postviewer.data.model.PostModel
 import br.edu.ifsp.scl.sc3045153.postviewer.ui.viewmodel.PostListViewModel
 
 @Composable
 fun PostListRoute(
     modifier: Modifier = Modifier,
     viewModel: PostListViewModel = viewModel(),
-    onPostClick: (Post) -> Unit,
+    onPostClick: (PostModel) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -47,7 +49,7 @@ fun PostListRoute(
 @Composable
 fun PostListScreen(
     uiState: PostListUiState,
-    onPostClick: (Post) -> Unit,
+    onPostClick: (PostModel) -> Unit,
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -132,8 +134,8 @@ private fun ErrorContent(
 
 @Composable
 private fun PostListContent(
-    posts: List<Post>,
-    onPostClick: (Post) -> Unit,
+    posts: List<PostModel>,
+    onPostClick: (PostModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -152,7 +154,7 @@ private fun PostListContent(
 
 @Composable
 private fun PostItem(
-    post: Post,
+    post: PostModel,
     onClick: () -> Unit
 ) {
     Card(
@@ -162,20 +164,25 @@ private fun PostItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = post.title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = post.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
 
-            Text(
-                text = post.body,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-        }
+                Text(
+                    text = post.body,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                Text(
+                    text = "Number of comments ${post.numberOfComment}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
     }
 }
 

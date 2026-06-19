@@ -1,0 +1,9 @@
+package br.edu.ifsp.scl.sc3045153.postviewer.data.model
+
+data class PostModel(
+    val userId: Int,
+    val id: Int,
+    val title: String,
+    val body: String,
+    val numberOfComment: Number
+)
