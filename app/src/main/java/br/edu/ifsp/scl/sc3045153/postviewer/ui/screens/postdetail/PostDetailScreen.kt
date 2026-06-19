@@ -3,10 +3,8 @@ package br.edu.ifsp.scl.sc3045153.postviewer.ui.screens.postdetail
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
@@ -23,19 +21,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.edu.ifsp.scl.sc3045153.postviewer.data.model.Comment
-import br.edu.ifsp.scl.sc3045153.postviewer.ui.screens.viewmodel.PostDetailsViewModel
+import br.edu.ifsp.scl.sc3045153.postviewer.viewmodel.PostDetailViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.ui.platform.LocalContext
+import br.edu.ifsp.scl.sc3045153.postviewer.data.local.DatabaseProvider
+import br.edu.ifsp.scl.sc3045153.postviewer.data.repository.PostRepository
+import br.edu.ifsp.scl.sc3045153.postviewer.viewmodel.PostDetailViewModelFactory
 
 @Composable
 fun PostDetailRoute(
     postId: Int,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: PostDetailsViewModel = viewModel(),
 ) {
+    val context = LocalContext.current
+
+    val repository = androidx.compose.runtime.remember {
+        val database = DatabaseProvider.getDatabase(context)
+
+        PostRepository(
+            localCommentDao = database.localCommentDao()
+        )
+    }
+
+    val viewModel: PostDetailViewModel = viewModel(factory = PostDetailViewModelFactory(repository))
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(postId) {
@@ -129,7 +141,7 @@ private fun ErrorComments(message: String, onRetryClick: () -> Unit) {
 }
 
 @Composable
-private fun CommentList(comments: List<Comment>) {
+private fun CommentList(comments: List<CommentUiModel>) {
     LazyColumn(
         contentPadding = PaddingValues(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -141,7 +153,7 @@ private fun CommentList(comments: List<Comment>) {
 }
 
 @Composable
-private fun CommentItem(comment: Comment) {
+private fun CommentItem(comment: CommentUiModel) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -159,6 +171,13 @@ private fun CommentItem(comment: Comment) {
                 modifier = Modifier.padding(top = 4.dp)
             )
 
+            if (comment.isLocal) {
+                Text(
+                    text = "Comentário local",
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
             Text(
                 text = comment.body,
                 style = MaterialTheme.typography.bodyMedium,
@@ -172,7 +191,7 @@ private fun CommentItem(comment: Comment) {
 @Preview
 @Composable
 private fun PostDetailScreenPrev() {
-    val viewModel: PostDetailsViewModel = viewModel()
+    val viewModel: PostDetailViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     PostDetailScreen(1, uiState, {}, {})
 }
