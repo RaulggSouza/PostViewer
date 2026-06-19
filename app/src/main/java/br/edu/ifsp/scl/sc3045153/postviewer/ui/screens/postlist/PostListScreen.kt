@@ -75,10 +75,19 @@ fun PostListScreen(
             }
 
             else -> {
-                PostListContent(
-                    posts = uiState.posts,
-                    onPostClick = onPostClick
-                )
+                if (uiState.posts.isEmpty()) {
+                    Text(
+                        text = "Nenhum post encontrado.",
+                        modifier = Modifier.padding(top = 16.dp),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                } else {
+                    PostListContent(
+                        posts = uiState.posts,
+                        onPostClick = onPostClick,
+                        modifier = modifier.weight(1f)
+                    )
+                }
             }
         }
     }
@@ -124,9 +133,11 @@ private fun ErrorContent(
 @Composable
 private fun PostListContent(
     posts: List<Post>,
-    onPostClick: (Post) -> Unit
+    onPostClick: (Post) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
+        modifier = modifier,
         contentPadding = PaddingValues(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {

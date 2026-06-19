@@ -115,9 +115,18 @@ fun PostDetailScreen(
             }
 
             else -> {
-                CommentList(
-                    comments = uiState.comments
-                )
+                if (uiState.comments.isEmpty()) {
+                    Text(
+                        text = "Nenhum comentário encontrado.",
+                        modifier = Modifier.padding(top = 16.dp),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                } else {
+                    CommentList(
+                        comments = uiState.comments,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
     }
@@ -155,8 +164,9 @@ private fun ErrorComments(message: String, onRetryClick: () -> Unit) {
 }
 
 @Composable
-private fun CommentList(comments: List<CommentUiModel>) {
+private fun CommentList(comments: List<CommentUiModel>, modifier: Modifier = Modifier) {
     LazyColumn(
+        modifier = modifier,
         contentPadding = PaddingValues(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
