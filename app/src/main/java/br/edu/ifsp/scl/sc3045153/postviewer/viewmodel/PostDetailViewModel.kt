@@ -54,6 +54,48 @@ class PostDetailViewModel(private val repository: PostRepository = PostRepositor
             }
         }
     }
+
+    fun onNewCommentBodyChange(body: String) {
+        _uiState.value = _uiState.value.copy(
+            newCommentBody = body
+        )
+    }
+
+    fun addLocalComment(postId: Int) {
+        val body = _uiState.value.newCommentBody.trim()
+
+        if (body.isBlank()) {
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                isAddingComment = true,
+                errorMessage = null
+            )
+
+            try {
+                val localComment = LocalCommentEntity(
+                    postId = postId,
+                    name = "Você",
+                    email = "comentario-local@postviewer.app",
+                    body = body
+                )
+
+                repository.addLocalComment(localComment)
+
+                _uiState.value = _uiState.value.copy(
+                    newCommentBody = "",
+                    isAddingComment = false
+                )
+            } catch (exception: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isAddingComment = false,
+                    errorMessage = "Não foi possível adicionar o comentário."
+                )
+            }
+        }
+    }
 }
 
 private fun Comment.toUiModel(): CommentUiModel {

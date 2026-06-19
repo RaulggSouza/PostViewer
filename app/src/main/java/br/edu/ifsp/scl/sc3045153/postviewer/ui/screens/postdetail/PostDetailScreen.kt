@@ -25,6 +25,7 @@ import br.edu.ifsp.scl.sc3045153.postviewer.viewmodel.PostDetailViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.ui.platform.LocalContext
 import br.edu.ifsp.scl.sc3045153.postviewer.data.local.DatabaseProvider
 import br.edu.ifsp.scl.sc3045153.postviewer.data.repository.PostRepository
@@ -61,6 +62,10 @@ fun PostDetailRoute(
         onRetryClick = {
             viewModel.loadComments(postId)
         },
+        onNewCommentBodyChange = viewModel::onNewCommentBodyChange,
+        onAddCommentClick = {
+            viewModel.addLocalComment(postId)
+        },
         modifier = modifier
     )
 }
@@ -71,6 +76,8 @@ fun PostDetailScreen(
     uiState: PostDetailUiState,
     onBackClick: () -> Unit,
     onRetryClick: () -> Unit,
+    onNewCommentBodyChange: (String) -> Unit,
+    onAddCommentClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -87,6 +94,13 @@ fun PostDetailScreen(
         Button(onClick = onBackClick, modifier = Modifier.padding(top = 12.dp)) {
             Text(text = "Voltar")
         }
+
+        AddCommentForm(
+            commentBody = uiState.newCommentBody,
+            isAddingComment = uiState.isAddingComment,
+            onCommentBodyChange = onNewCommentBodyChange,
+            onAddCommentClick = onAddCommentClick
+        )
 
         when {
             uiState.isLoading -> {
@@ -188,10 +202,55 @@ private fun CommentItem(comment: CommentUiModel) {
     }
 }
 
+@Composable
+fun AddCommentForm(
+    commentBody: String,
+    isAddingComment: Boolean,
+    onCommentBodyChange: (String) -> Unit,
+    onAddCommentClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)
+    ) {
+        OutlinedTextField(
+            value = commentBody,
+            onValueChange = onCommentBodyChange,
+            modifier = Modifier.fillMaxWidth(),
+            label = {
+                Text(text = "Novo comentário")
+            },
+            minLines = 2
+        )
+
+        Button(
+            onClick = onAddCommentClick,
+            enabled = commentBody.isNotBlank() && !isAddingComment,
+            modifier = Modifier.padding(top = 8.dp)
+        ) {
+            Text(
+                text = if (isAddingComment) {
+                    "Adicionando..."
+                } else {
+                    "Adicionar comentário"
+                }
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun PostDetailScreenPrev() {
     val viewModel: PostDetailViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    PostDetailScreen(1, uiState, {}, {})
+    PostDetailScreen(
+        1,
+        uiState,
+        {},
+        {},
+        {},
+        {}
+    )
 }
